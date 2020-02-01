@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## Airbnb Price Prediction
 
 You can use the [editor on GitHub](https://github.com/verodhi/githubpagestest/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
