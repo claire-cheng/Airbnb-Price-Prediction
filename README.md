@@ -1,4 +1,4 @@
-## Project Aims and Background
+## **Project Aims and Background**
 Airbnb is a home-sharing internet platform that allows home-owners to market their properties online for short-term rentals. The renters, also called the hosts, are responsible for setting the prices on their own listings based on their intuition. Without a proper guidance on the pricing criterias, it could be very challenging for the hosts not to overprice their listings and at the same time selling short on their homes. Therefore, this project acts as the middle man by using several listing features to try fit a statistical model that predicts optimal prices of the listings for the hosts.
 
 
