@@ -2,14 +2,14 @@
 Airbnb is a home-sharing internet platform that allows home-owners to market their properties online for short-term rentals. The renters, also called the hosts, are responsible for setting the prices on their own listings based on their intuition. Without a proper guidance on the pricing criterias, it could be very challenging for the hosts not to overprice their listings and at the same time selling short on their homes. Therefore, this project acts as the middle man by using several listing features to try fit a statistical model that predicts optimal prices of the listings for the hosts.
 
 
-## Data Exploration
+## **Data Exploration**
 Two different sets of datasets were given, one was the analysis data and the other one was the scoring data, which was used for our submissions to Kaggle. The only difference between the two datasets were the number of observations and the additional Price variable in the analysis dataset. I started my data exploration process with the analysis dataset. This dataset contained 91 variables including Price, the outcome. It was challenging to manipulate the data without fully understood the variables, soI started eyeballing and exploring all the 90 variables one by one following the steps listed below:
  - Removed variables that were irrelevant to Price.   
  - Removed variables with high ratios of NAs.
  - Removed variables that contained only one value or one level.
  - Removed any variables that held redundant information.
 
-## Data Transformation
+## **Data Transformation**
 After removing some variables through the manual process, I then conducted data transformation on some of the variables. 
 1. Identified NAs and performed the following transformations on some variables.
    - Imputed NA values using the Caret package for security_deposit (35% were NAs) and cleaning_fee (16% were NAs). 
@@ -44,20 +44,20 @@ After removing some variables through the manual process, I then conducted data 
 5. Reduced the gaps between values
    - The gaps between the prices of security_deposit were quite significant, so I decided to group the prices into a smaller scale of 0 to 10.
    
-## Data Splitting
+## **Data Splitting**
 In order to predict the price of a listing, I used the process in the caret package to split data into train and test sets. Of which, train dataset consisted of 70% of the original data and 30% were split to test.
 
-## Feature Selection
+## **Feature Selection**
 Initially, I manually selected the variables I thought that were more relevant to Price regardless of the class of the variables, i.e. amenities. After data were transformed, I was left with 300+ variables. I then ran both the forward and backward selection process on the train dataset to select the most significant predictors. The predictors selected by the forward selection gave me a lower RMSE, so I decided to use the forward selection method.
 
-## Model Fitting
+## **Model Fitting**
 I fitted different models, including Linear Model, Bagging, Random Forest, and Boosting. After I selected my predictors from forward selection, I decided to tune my model when I was fitting Random Forest and Boosting; however, my code never finished running after 8 hours or more. Eventually, I finally gave up and started tuning these models manually. As a result, boosting gave me the best model with the lowest RMSE.
 
 During the fitting process, I found a few things that were quite interesting and I was not expected to see. After running the forward selection process, I had a set of predictors chosen by the process. Initially I decided to use the same set of predictors to fit all the models and see which model would give me the lowest RMSE. During the process, I noticed that removing outliers, imputing NAs, removing NAs, adding interactions significantly decreased the RMSE for linear regression but surprisingly, these actions increased the RMSE for both random forest and boosting. I then reverted most of the data cleansing I conducted and removed the interactions that I added for linear regression to fit the two models again. They indeed gave me lower RMSEs, a 60 for random forest and a 63 for boosting, than the lowest RMSE I got from linear regression, a 66. 
 
 After reaching the lowest RMSE of my own record, I decided to tune the models manually since running CV was not an option for me due to slow performance. I tried to fit different numbers of trees for both random forest and boosting. I also tried fitting different interaction.depth, shrinkage, and cv.folds for boosting. In the end, boosting performed faster and returned a slightly lower RMSE, a 58, than what random forest returned, a 59.
 
-## Conclusions and Recommendations
+## **Conclusions and Recommendations**
 
 
 ```markdown
