@@ -1,8 +1,8 @@
+## Project Aims and Background
 Airbnb is a home-sharing internet platform that allows home-owners to market their properties online for short-term rentals. The renters, also called the hosts, are responsible for setting the prices on their own listings based on their intuition. Without a proper guidance on the pricing criterias, it could be very challenging for the hosts not to overprice their listings and at the same time selling short on their homes. Therefore, this project acts as the middle man by using several listing features to try fit a statistical model that predicts optimal prices of the listings for the hosts.
 
 
 ## Data Exploration
-
 Two different sets of datasets were given, one was the analysis data and the other one was the scoring data, which was used for our submissions to Kaggle. The only difference between the two datasets were the number of observations and the additional Price variable in the analysis dataset. I started my data exploration process with the analysis dataset. This dataset contained 91 variables including Price, the outcome. It was challenging to manipulate the data without fully understood the variables, soI started eyeballing and exploring all the 90 variables one by one following the steps listed below:
  - Removed variables that were irrelevant to Price.   
  - Removed variables with high ratios of NAs.
