@@ -13,27 +13,78 @@ Two different sets of datasets were given, one was the analysis data and the oth
 After removing some variables through the manual process, I then conducted data transformation on some of the variables. 
 1. Identified NAs and performed the following transformations on some variables.
    - Imputed NA values using the Caret package for security_deposit (35% were NAs) and cleaning_fee (16% were NAs). 
+     ```markdown
+     library(caret)
+     analysis_caret <- predict(preProcess(analysisData_clean,method='bagImpute'),newdata=analysisData_clean)
+     analysisData_clean$security_deposit <- round(analysis_caret$security_deposit)
+     analysisData_clean$cleaning_fee <- round(analysis_caret$cleaning_fee)
+     ```
    - There were some 0s in Price, so I thought I would set those 0s to NAs and impute them with the Caret package in order to get better predictions.
+     ```markdown
+     analysisData_clean$price[analysisData_clean$price==0] = NA
+     analysisData_clean$price <- round(analysis_caret$price)
+     ```
    - Converted NAs in host_about to empty strings for future transformation.
+     ```markdown
+     analysisData_clean$host_about[is.na(analysisData_clean$host_about)] <- ''
+     ```
    - I also removed 3 rows with number_of_reviews = 0 because there were few variables associated with reviews. With number_of_reviews being 0, all of the other variables were also NAs.
+     ```markdown
+     analysisData_clean <- subset(analysisData_clean, number_of_reviews > 0)
+     ```
    - I then used rowSums to identify all the remaining NAs in the dataset and removed them. There were 15 of them left after performing the previous steps.
+     ```markdown
+     analysisData_clean <- subset(analysisData_clean, rowSums(is.na(analysisData_clean))==0)
+     ```
 2. Converted characters to numeric values.
    - Some of the variables were factors with only two levels “t” or “f”, so I converted them into 1 for “t”s and 0 for “f”s and empty strings for the following variables:
       - Host_is_superhost
       - Host_has_profile_pic
       - Host_identity_verified
       - Require_guest_profile_picture
+      ```markdown
+      analysisData_clean$host_is_superhost <- as.numeric(ifelse(analysisData_clean$host_is_superhost == 't', 1, 0))
+      analysisData_clean$host_has_profile_pic <- as.numeric(ifelse(analysisData_clean$host_has_profile_pic == 't', 1, 0))
+      analysisData_clean$host_identity_verified <- as.numeric(ifelse(analysisData_clean$host_identity_verified == 't', 1, 0))
+      analysisData_clean$price <- as.numeric(analysisData_clean$price)
+      analysisData_clean$extra_people <- as.numeric(analysisData_clean$extra_people)
+      analysisData_clean$require_guest_profile_picture <- as.numeric(ifelse(analysisData_clean$require_guest_profile_picture == 't', 1, 0))
+      ```
 3. Converted class from integers to numeric.
    - Some of the variables were more suitable as numerics other than integers, so I converted the following variables:
       - Price
       - Extra_people
+      - Require_guest_profile_picture
+      ```markdown
+      analysisData_clean$price <- as.numeric(analysisData_clean$price)
+      analysisData_clean$extra_people <- as.numeric(analysisData_clean$extra_people)
+      analysisData_clean$require_guest_profile_picture <- as.numeric(ifelse(analysisData_clean$require_guest_profile_picture == 't', 1, 0))
+      ```
 4. Transformed existing variables into new calculated variables.
    - Since the date fields were not meaningful in fitting models, I used them to calculate the length of hosting and length of listing in days and created new variables to store them.
+      ```markdown
+     analysisData_clean <- analysisData_clean %>% 
+     mutate(listing_duration = as.numeric(ymd(analysisData_clean$last_review)-ymd(analysisData_clean$first_review)),
+     hosting_duration = as.numeric(ymd(analysisData_clean$last_review)-ymd(analysisData_clean$host_since))
+           )
+      ```
    - The existing variable, host_local stored information of where the host was located. Since the hosts could be located in any location in the world, I chose to only look at the ones that were in New York, locally, and set them to 1, anywhere else 0. 
+      ```markdown
+     analysisData_clean <- analysisData_clean %>% 
+     mutate(host_local = as.numeric(str_detect(host_location, 'New York|new york|NY')))
+      ```   
    - Prices could be affected for those hosts who provided some personal information, so I calculated the length of host_about and stored it in a new variable- host_about_len.
+      ```markdown
+     analysisData_clean <- analysisData_clean %>% 
+     mutate(host_about_len = ifelse(is.na(host_about), 0, str_length(host_about)))
+      ```
    - Amenities contained all the amenities the Airbnb provided into a string separated by “,”. I decided to clean the variable by removing all the spaces and separated all the amenities by “,”. After storing unique amenities into a list, I created variables for each of the amenities and assigned a 1 if that amenity was included in the unit and 0 if not.
+      ```markdown
+     analysisData_clean <- analysisData_clean %>% 
+     mutate(total_amenities = ifelse(str_length(amenities)>2, str_count(amenities, ',')+1, 0))
+      ```
    - Dummy variables- I didn’t want to include any categorical variables in my model, so I created dummy variables for all categorical variables and assigned them numeric values.
-      - I created dummy variables for each level of the variables listed below and assigned a 1 if that level was presented in the row, if not, 0.
+     - I created dummy variables for each level of the variables listed below and assigned a 1 if that level was presented in the row, if not, 0.
         -  Neighbourhood_group_cleansed
         -  Property_type
         -  Room_type
