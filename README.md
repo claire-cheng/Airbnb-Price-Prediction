@@ -134,6 +134,7 @@ In order to predict the price of a listing, I used the process in the caret pack
     train = analysisData_clean_nzv[split,]
     test = analysisData_clean_nzv[-split,]
     ```
+    
 ## **Feature Selection**
 Initially, I manually selected the variables I thought that were more relevant to Price regardless of the class of the variables, i.e. amenities. After data were transformed, I was left with 300+ variables. I then ran both the forward and backward selection process on the train dataset to select the most significant predictors. The predictors selected by the forward selection gave me a lower RMSE, so I decided to use the forward selection method.
 
@@ -146,6 +147,7 @@ Initially, I manually selected the variables I thought that were more relevant t
                        direction = 'forward')
      summary(forwardStepwise)
      ```
+     
 ## **Model Fitting**
 I fitted different models, including Linear Model, Bagging, Random Forest, and Boosting. After I selected my predictors from forward selection, I decided to tune my model when I was fitting Random Forest and Boosting; however, my code never finished running after 8 hours or more. Eventually, I finally gave up and started tuning these models manually. As a result, boosting gave me the best model with the lowest RMSE.
 
