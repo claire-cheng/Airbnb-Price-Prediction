@@ -126,28 +126,26 @@ After removing some variables through the manual process, I then conducted data 
     
 ## **Data Splitting**
 In order to predict the price of a listing, I used the process in the caret package to split data into train and test sets. Of which, train dataset consisted of 70% of the original data and 30% were split to test.
-
-    ```markdown
+```markdown
     library(caret)
     set.seed(61710)
     split = createDataPartition(y=analysisData_clean_nzv$price,p=0.7,list=F,group = 50)
     train = analysisData_clean_nzv[split,]
     test = analysisData_clean_nzv[-split,]
-    ```
-    
+```
+
 ## **Feature Selection**
 Initially, I manually selected the variables I thought that were more relevant to Price regardless of the class of the variables, i.e. amenities. After data were transformed, I was left with 300+ variables. I then ran both the forward and backward selection process on the train dataset to select the most significant predictors. The predictors selected by the forward selection gave me a lower RMSE, so I decided to use the forward selection method.
+```markdown
+    start_mod = lm(price~1, data = train)
+    empty_mod = lm(price~1, data = train)
+    full_mod = lm(price~.,data = train)
+    forwardStepwise = step(start_mod,
+                           scope = list(upper=full_mod,lower=empty_mod),
+                           direction = 'forward')
+    summary(forwardStepwise)
+```
 
-     ```markdown
-     start_mod = lm(price~1, data = train)
-     empty_mod = lm(price~1, data = train)
-     full_mod = lm(price~.,data = train)
-     forwardStepwise = step(start_mod,
-                       scope = list(upper=full_mod,lower=empty_mod),
-                       direction = 'forward')
-     summary(forwardStepwise)
-     ```
-     
 ## **Model Fitting**
 I fitted different models, including Linear Model, Bagging, Random Forest, and Boosting. After I selected my predictors from forward selection, I decided to tune my model when I was fitting Random Forest and Boosting; however, my code never finished running after 8 hours or more. Eventually, I finally gave up and started tuning these models manually. As a result, boosting gave me the best model with the lowest RMSE.
 
