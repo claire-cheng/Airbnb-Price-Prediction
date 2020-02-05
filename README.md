@@ -167,7 +167,7 @@ After reaching the lowest RMSE of my own record, I decided to tune the models ma
     pred = predict(regTree1_complex,newdata=test)
     rmse_analysis = sqrt(mean((pred-test$price)^2)); rmse_analysis
    ```
-   - Pruned Regression Tree
+  - Pruned Regression Tree
    ```markdown
     library(caret)
     trControl = trainControl(method="cv",number=10)
@@ -182,7 +182,7 @@ After reaching the lowest RMSE of my own record, I decided to tune the models ma
     predTreeCV_1 = predict(treeCV_1,newdata=test)
     rmseCV_1 = sqrt(mean((predTreeCV_1-test$price)^2)); rmseCV_1
    ```
-   - Bagging
+  - Bagging
    ```markdown
     library(randomForest)
     set.seed(617)
@@ -190,7 +190,7 @@ After reaching the lowest RMSE of my own record, I decided to tune the models ma
     predBag = predict(bag,newdata=test)
     rmseBag = sqrt(mean((predBag-test$price)^2)); rmseBag
    ```
-   - Random Forest
+  - Random Forest
    ```markdown
     library(randomForest)
     set.seed(617)
@@ -198,7 +198,7 @@ After reaching the lowest RMSE of my own record, I decided to tune the models ma
     predForest = predict(model_RF_1,newdata = test)
     rmseForest = sqrt(mean((predForest-test$price)^2)); rmseForest
    ```
-   - Random Forest with 10-fold Cross-validation
+  - Random Forest with 10-fold Cross-validation
    ```markdown
     trControl = trainControl(method="cv",number=10)
     tuneGrid = expand.grid(mtry=1:42)
@@ -207,7 +207,7 @@ After reaching the lowest RMSE of my own record, I decided to tune the models ma
     predTreeCV_2 = predict(cvForest,newdata=test)
     rmseCV_2 = sqrt(mean((predTreeCV_2-test$price)^2)); rmseCV_2
    ```
-   - Boosting
+  - Boosting
    ```markdown
     library(gbm)
     set.seed(617)
@@ -215,7 +215,7 @@ After reaching the lowest RMSE of my own record, I decided to tune the models ma
     pred_boost = predict(boost,newdata=test,n.trees=5000)
     rmse_boost = sqrt(mean((pred_boost-test$price)^2)); rmse_boost
    ```
-   - Boosting with 10-fold Cross-validation
+  - Boosting with 10-fold Cross-validation
    ```markdown
     trControl = trainControl(method="cv",number=10)
     tuneGrid = expand.grid(n.trees=1000,interaction.depth=c(1,2),shrinkage = (1:100)*0.001,n.minobsinnode=5)
