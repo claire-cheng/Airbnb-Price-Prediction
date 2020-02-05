@@ -229,4 +229,5 @@ After reaching the lowest RMSE of my own record, I decided to tune the models ma
     rmseBoostCV = sqrt(mean((predBoostCV-test$price)^2)); rmseBoostCV
    ```
 
-## **Conclusions and Recommendations**
+## **Conclusions**
+As a result, boosting preformed the best on price prediction with the lowest RMSE among all other statistical models. However, this model only predicts about 73% of the variation in price, which means that there are still a remaining 27% that are unexplained. One of the probabilities that led to the remaining 27% might be related to the features that are not presented in the dataset. In general, property photos, including quality, angles, coverage, and honest of the photos, are one of the main key indicators that help renters decide whether to rent the listings or not, and thus it would have siginificant influneces on price. Not having this feature included in the dataset could affects the model's prediction accurarcy.
